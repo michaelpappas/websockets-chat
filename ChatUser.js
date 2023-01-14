@@ -91,6 +91,18 @@ class ChatUser {
     }));
   }
 
+  /** TODO: */
+
+  handlePrivate(text, username) {
+    const recipient = this.room.getMember(username);
+
+    recipient.send(JSON.stringify({
+      name: this.name,
+      type: "chat",
+      text: text,
+    }))
+  }
+
   /** Handle messages from client:
    *
    * @param jsonData {string} raw message data
@@ -108,6 +120,7 @@ class ChatUser {
     else if (msg.type === "chat") this.handleChat(msg.text);
     else if (msg.type === 'joke') this.handleJoke();
     else if (msg.type === 'members') this.handleMembers();
+    else if (msg.type === 'private') this.handlePrivate(msg.text, msg.username);
     else throw new Error(`bad message: ${msg.type}`);
   }
 

@@ -58,15 +58,22 @@ ws.onclose = function (evt) {
 
 $("form").submit(function (evt) {
   evt.preventDefault();
-  const text = $("#m").val();
+  let text = $("#m").val();
   let data = {};
 
   if (text === '/joke') {
     data = { type: 'joke' };
   } else if (text === '/members') {
     data = { type: 'members' };
+  } else if (text.startsWith('/priv')) {
+    const splitText = text.split(' ');
+    const username = text.split(' ')[1];
+    splitText.shift();
+    splitText.shift();
+    text = splitText.join(' ');
+    data = { type: 'private', text: text, username: username };
   } else {
-    data = { type: "chat", text: $("#m").val() };
+    data = { type: "chat", text: text };
   }
 
   ws.send(JSON.stringify(data));

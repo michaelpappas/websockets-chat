@@ -67,6 +67,14 @@ class Room {
       member.send(JSON.stringify(data));
     }
   }
+
+  /** TODO: */
+
+  getMember(username) {
+    for (let member of this.members) {
+      if (member.name === username) return member;
+    }
+  }
 }
 
 module.exports = Room;
