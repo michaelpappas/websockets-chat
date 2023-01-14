@@ -63,7 +63,9 @@ class ChatUser {
     });
   }
 
-  /** handleJoke: TODO: */
+  /** handleJoke: queries the icanhazdadjoke api for a single joke
+   * send the joke to the user that requested it.
+   */
 
   async handleJoke() {
     const joke = await getJoke();
@@ -71,7 +73,22 @@ class ChatUser {
       name: "icanhazdadjoke",
       type: "chat",
       text: joke,
-    }))
+    }));
+  }
+
+  /** handleMembers: grabs the member from this.room
+  * send the room members to the user that requested.
+   */
+
+  async handleMembers() {
+    const members = this.room.members;
+    const names = [...members].map(m => m.name);
+
+    this.send(JSON.stringify({
+      name: "List of room members",
+      type: "chat",
+      text: names.join(", "),
+    }));
   }
 
   /** Handle messages from client:
@@ -90,6 +107,7 @@ class ChatUser {
     if (msg.type === "join") this.handleJoin(msg.name);
     else if (msg.type === "chat") this.handleChat(msg.text);
     else if (msg.type === 'joke') this.handleJoke();
+    else if (msg.type === 'members') this.handleMembers();
     else throw new Error(`bad message: ${msg.type}`);
   }
 

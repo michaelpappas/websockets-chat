@@ -59,10 +59,12 @@ ws.onclose = function (evt) {
 $("form").submit(function (evt) {
   evt.preventDefault();
   const text = $("#m").val();
-  let data = {}
+  let data = {};
 
   if (text === '/joke') {
     data = { type: 'joke' };
+  } else if (text === '/members') {
+    data = { type: 'members' };
   } else {
     data = { type: "chat", text: $("#m").val() };
   }
